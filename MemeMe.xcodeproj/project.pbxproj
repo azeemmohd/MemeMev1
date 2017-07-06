@@ -12,6 +12,7 @@
 		9F1511831F0E6823008B0B66 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F1511811F0E6823008B0B66 /* Main.storyboard */; };
 		9F1511851F0E6823008B0B66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F1511841F0E6823008B0B66 /* Assets.xcassets */; };
 		9F1511881F0E6823008B0B66 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F1511861F0E6823008B0B66 /* LaunchScreen.storyboard */; };
+		9F1511901F0E9468008B0B66 /* ViewController+Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F15118F1F0E9468008B0B66 /* ViewController+Text.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		9F1511841F0E6823008B0B66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F1511871F0E6823008B0B66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9F1511891F0E6823008B0B66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9F15118F1F0E9468008B0B66 /* ViewController+Text.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+Text.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				9F1511841F0E6823008B0B66 /* Assets.xcassets */,
 				9F1511861F0E6823008B0B66 /* LaunchScreen.storyboard */,
 				9F1511891F0E6823008B0B66 /* Info.plist */,
+				9F15118F1F0E9468008B0B66 /* ViewController+Text.swift */,
 			);
 			path = MemeMe;
 			sourceTree = "<group>";
@@ -136,6 +139,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F1511901F0E9468008B0B66 /* ViewController+Text.swift in Sources */,
 				9F1511801F0E6823008B0B66 /* ViewController.swift in Sources */,
 				9F15117E1F0E6823008B0B66 /* AppDelegate.swift in Sources */,
 			);
@@ -299,6 +303,7 @@
 				9F15118E1F0E6823008B0B66 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
