@@ -27,7 +27,11 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                                 <items>
                                     <navigationItem id="xTU-a3-8pT">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="i8s-eY-e8X"/>
+                                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="i8s-eY-e8X">
+                                            <connections>
+                                                <action selector="shareMeme:" destination="BYZ-38-t0r" id="VEz-NE-3lg"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="zg2-wO-7p5">
                                             <connections>
                                                 <action selector="clearAll:" destination="BYZ-38-t0r" id="0fP-aY-TTS"/>
@@ -61,7 +65,7 @@
                                 </items>
                             </toolbar>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fof-K5-4hE">
-                                <rect key="frame" x="0.0" y="44" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="92" width="320" height="384"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="TOP" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="40" translatesAutoresizingMaskIntoConstraints="NO" id="poe-T6-Id7">
@@ -94,10 +98,10 @@
                             <constraint firstAttribute="trailingMargin" secondItem="poe-T6-Id7" secondAttribute="trailing" constant="-16" id="AIf-0j-nYD"/>
                             <constraint firstAttribute="trailing" secondItem="33Y-qz-4Lg" secondAttribute="trailing" id="LOY-kE-5jg"/>
                             <constraint firstItem="poe-T6-Id7" firstAttribute="top" secondItem="33Y-qz-4Lg" secondAttribute="bottom" constant="7" id="OHh-jc-INj"/>
-                            <constraint firstItem="wqb-9G-My8" firstAttribute="top" secondItem="fof-K5-4hE" secondAttribute="bottom" id="Q41-vV-N36"/>
+                            <constraint firstItem="wqb-9G-My8" firstAttribute="top" secondItem="fof-K5-4hE" secondAttribute="bottom" constant="48" id="Q41-vV-N36"/>
                             <constraint firstItem="poe-T6-Id7" firstAttribute="trailing" secondItem="yKQ-9K-Qxi" secondAttribute="trailing" id="Yy2-YL-LJd"/>
                             <constraint firstItem="33Y-qz-4Lg" firstAttribute="trailing" secondItem="wqb-9G-My8" secondAttribute="trailing" id="Z5y-84-h3m"/>
-                            <constraint firstItem="fof-K5-4hE" firstAttribute="top" secondItem="33Y-qz-4Lg" secondAttribute="bottom" id="ZL9-2z-tP3"/>
+                            <constraint firstItem="fof-K5-4hE" firstAttribute="top" secondItem="33Y-qz-4Lg" secondAttribute="bottom" constant="48" id="ZL9-2z-tP3"/>
                             <constraint firstItem="wqb-9G-My8" firstAttribute="top" secondItem="yKQ-9K-Qxi" secondAttribute="bottom" constant="9" id="dnb-xq-cRw"/>
                             <constraint firstItem="33Y-qz-4Lg" firstAttribute="leading" secondItem="wqb-9G-My8" secondAttribute="leading" id="lai-4z-K6t"/>
                             <constraint firstItem="wqb-9G-My8" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="oRg-KK-fGH"/>
@@ -110,9 +114,9 @@
                         <outlet property="bottomTextField" destination="yKQ-9K-Qxi" id="dDq-aP-94d"/>
                         <outlet property="cameraBtn" destination="0Z5-L5-Tba" id="UGw-ho-dHn"/>
                         <outlet property="cancelBtn" destination="zg2-wO-7p5" id="ZZk-K8-bUv"/>
-                        <outlet property="imagePicked" destination="fof-K5-4hE" id="dL8-QU-B7A"/>
+                        <outlet property="imagePicked" destination="fof-K5-4hE" id="cD3-4q-Ipg"/>
                         <outlet property="photoPickerBtn" destination="TuF-kS-MRa" id="9ZI-Fh-7Jx"/>
-                        <outlet property="shareBtn" destination="i8s-eY-e8X" id="dcW-Km-vRZ"/>
+                        <outlet property="shareBtn" destination="i8s-eY-e8X" id="Ov6-zW-Mqz"/>
                         <outlet property="topTextField" destination="poe-T6-Id7" id="CLO-YO-ngo"/>
                     </connections>
                 </viewController>

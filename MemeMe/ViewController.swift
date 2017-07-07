@@ -28,6 +28,8 @@ UINavigationControllerDelegate {
     
     @IBOutlet weak var bottomTextField: UITextField!
     
+    let imagePicker : UIImagePickerController = UIImagePickerController()
+    
     let memeTextAttributes:[String:Any] = [
         NSStrokeColorAttributeName: UIColor.black,
         NSForegroundColorAttributeName: UIColor.white,
@@ -40,12 +42,9 @@ UINavigationControllerDelegate {
         cancelBtn.isEnabled = true
         cameraBtn.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         setupTextFields()
-        imagePicked.image = nil
     }
     
     func setupTextFields() {
-        topTextField.delegate = self
-        bottomTextField.delegate = self
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTTOM"
         topTextField.defaultTextAttributes = memeTextAttributes
@@ -55,21 +54,20 @@ UINavigationControllerDelegate {
     }
     
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidLoad(){
+        topTextField.delegate = self
+        bottomTextField.delegate = self
+        imagePicker.delegate = self
         resetUI()
     }
 
     @IBAction func pickAnImageFromCamera(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
         imagePicker.sourceType = .camera
         present(imagePicker, animated: true, completion: nil)
     }
     
     
     @IBAction func pickAnImageFromAlbum(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
     }
@@ -89,8 +87,17 @@ UINavigationControllerDelegate {
     
     
     @IBAction func clearAll(_ sender: Any) {
+        imagePicked.image = nil
         resetUI()
     }
+    
+    
+    @IBAction func shareMeme(_ sender: Any) {
+        let image = imagePicked.image!
+        let controller = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        self.present(controller, animated: true, completion: nil)
+    }
+    
     
 
 }
