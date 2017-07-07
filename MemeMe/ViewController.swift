@@ -11,6 +11,15 @@ import UIKit
 class ViewController: UIViewController, UIImagePickerControllerDelegate,
 UINavigationControllerDelegate {
     
+    struct Meme {
+        var topText : String
+        var bottomText : String
+        var originalImage: UIImage
+        var memedImage : UIImage
+    }
+    
+    var arrayOfMemes : [Meme] = [Meme]()
+    
     @IBOutlet weak var shareBtn: UIBarButtonItem!
     
     
@@ -28,7 +37,17 @@ UINavigationControllerDelegate {
     
     @IBOutlet weak var bottomTextField: UITextField!
     
+    var activeTextField : UITextField!
+    
     let imagePicker : UIImagePickerController = UIImagePickerController()
+    
+    @IBOutlet weak var topNav: UINavigationBar!
+    
+    @IBOutlet weak var bottomBar: UIToolbar!
+    
+    var shouldTopTextBeCleared : Bool = true
+    var shouldBottomTextBeCleared : Bool = true
+    var keyBoardWasManipulated : Bool = false
     
     let memeTextAttributes:[String:Any] = [
         NSStrokeColorAttributeName: UIColor.black,
@@ -47,6 +66,8 @@ UINavigationControllerDelegate {
     func setupTextFields() {
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTTOM"
+        shouldTopTextBeCleared = true
+        shouldBottomTextBeCleared = true
         topTextField.defaultTextAttributes = memeTextAttributes
         bottomTextField.defaultTextAttributes = memeTextAttributes
         topTextField.textAlignment = .center
@@ -60,7 +81,14 @@ UINavigationControllerDelegate {
         imagePicker.delegate = self
         resetUI()
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        subscribeToKeyboardNotifications()
+    }
+    
+    
     @IBAction func pickAnImageFromCamera(_ sender: Any) {
         imagePicker.sourceType = .camera
         present(imagePicker, animated: true, completion: nil)
@@ -71,7 +99,7 @@ UINavigationControllerDelegate {
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
     }
-
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
@@ -95,10 +123,75 @@ UINavigationControllerDelegate {
     @IBAction func shareMeme(_ sender: Any) {
         let image = imagePicked.image!
         let controller = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        controller.completionWithItemsHandler = {
+            (activity, success, items, error) in
+            if(success && error == nil){
+                self.save(memedImage: self.generateMemedImage())
+                self.dismiss(animated: true, completion: nil);
+            }
+            else if (error != nil){
+                print("Error Occured While Saving The Meme")
+            }
+        };
         self.present(controller, animated: true, completion: nil)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unsubscribeFromKeyboardNotifications()
+    }
     
-
+    func keyboardWillShow(_ notification:Notification) {
+        if(activeTextField == bottomTextField) {
+            view.frame.origin.y = 0 - getKeyboardHeight(notification)
+            keyBoardWasManipulated = true
+        }
+    }
+    
+    func keyboardWillHide(_ notification:Notification) {
+        if(keyBoardWasManipulated) {
+            view.frame.origin.y = 0
+            keyBoardWasManipulated = false
+        }
+    }
+    
+    func getKeyboardHeight(_ notification:Notification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        return keyboardSize.cgRectValue.height
+    }
+    
+    func subscribeToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func unsubscribeFromKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        
+    }
+    
+    
+    func save(memedImage: UIImage) {
+        let memeToSave = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imagePicked.image!, memedImage: memedImage)
+        
+        arrayOfMemes.append(memeToSave)
+    }
+    
+    func generateMemedImage() -> UIImage {
+        // Hide Top and Bottom Bars
+        topNav.isHidden = true
+        bottomBar.isHidden = true
+        // Render view to an image
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        //Show toolbar and navbar
+        topNav.isHidden = false
+        bottomBar.isHidden = false
+        return memedImage
+    }
 }
 
