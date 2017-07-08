@@ -17,19 +17,9 @@ extension ViewController : UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         activeTextField = textField
-        switch(textField.tag) {
-        case 1:
-            if(shouldTopTextBeCleared) {
-                textField.text = ""
-                shouldTopTextBeCleared = false
-            }
-        case 2:
-            if(shouldBottomTextBeCleared) {
-                textField.text = ""
-                shouldBottomTextBeCleared = false
-            }
-        default:
-            print("No Match")
+        if(shouldTextBeClearedDictionary[textField] == true) {
+            textField.text = ""
+            shouldTextBeClearedDictionary[textField] = false
         }
     }
     

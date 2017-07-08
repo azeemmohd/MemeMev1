@@ -8,15 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate,
-UINavigationControllerDelegate {
-    
-    struct Meme {
-        var topText : String
-        var bottomText : String
-        var originalImage: UIImage
-        var memedImage : UIImage
-    }
+class ViewController: UIViewController {
     
     var arrayOfMemes : [Meme] = [Meme]()
     
@@ -44,10 +36,10 @@ UINavigationControllerDelegate {
     @IBOutlet weak var topNav: UINavigationBar!
     
     @IBOutlet weak var bottomBar: UIToolbar!
-    
-    var shouldTopTextBeCleared : Bool = true
-    var shouldBottomTextBeCleared : Bool = true
+
     var keyBoardWasManipulated : Bool = false
+    
+    var shouldTextBeClearedDictionary = [UITextField : Bool]()
     
     let memeTextAttributes:[String:Any] = [
         NSStrokeColorAttributeName: UIColor.black,
@@ -64,14 +56,15 @@ UINavigationControllerDelegate {
     }
     
     func setupTextFields() {
-        topTextField.text = "TOP"
-        bottomTextField.text = "BOTTTOM"
-        shouldTopTextBeCleared = true
-        shouldBottomTextBeCleared = true
-        topTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.defaultTextAttributes = memeTextAttributes
-        topTextField.textAlignment = .center
-        bottomTextField.textAlignment = .center
+        configure(textField: topTextField, withText: "TOP")
+        configure(textField: bottomTextField, withText: "BOTTOM")
+    }
+    
+    func configure (textField: UITextField, withText: String) {
+        textField.text = withText
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.textAlignment = .center
+        shouldTextBeClearedDictionary[textField] = true
     }
     
     
@@ -89,29 +82,7 @@ UINavigationControllerDelegate {
     }
     
     
-    @IBAction func pickAnImageFromCamera(_ sender: Any) {
-        imagePicker.sourceType = .camera
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-    
-    @IBAction func pickAnImageFromAlbum(_ sender: Any) {
-        imagePicker.sourceType = .photoLibrary
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            imagePicked.image = image
-        }
-        shareBtn.isEnabled = true
-        dismiss(animated: true, completion: nil)
-    }
+
     
     
     @IBAction func clearAll(_ sender: Any) {
@@ -121,12 +92,12 @@ UINavigationControllerDelegate {
     
     
     @IBAction func shareMeme(_ sender: Any) {
-        let image = imagePicked.image!
+        let image = self.generateMemedImage()
         let controller = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         controller.completionWithItemsHandler = {
             (activity, success, items, error) in
             if(success && error == nil){
-                self.save(memedImage: self.generateMemedImage())
+                self.save(memedImage: image)
                 self.dismiss(animated: true, completion: nil);
             }
             else if (error != nil){
@@ -142,7 +113,7 @@ UINavigationControllerDelegate {
     }
     
     func keyboardWillShow(_ notification:Notification) {
-        if(activeTextField == bottomTextField) {
+        if(activeTextField != nil && activeTextField == bottomTextField) {
             view.frame.origin.y = 0 - getKeyboardHeight(notification)
             keyBoardWasManipulated = true
         }
@@ -179,18 +150,22 @@ UINavigationControllerDelegate {
         arrayOfMemes.append(memeToSave)
     }
     
+    func hideNavAndToolBar(hide : Bool) {
+        topNav.isHidden = hide
+        bottomBar.isHidden = hide
+    }
+    
     func generateMemedImage() -> UIImage {
-        // Hide Top and Bottom Bars
-        topNav.isHidden = true
-        bottomBar.isHidden = true
-        // Render view to an image
+        hideNavAndToolBar(hide: true)
+        
+        // Render view to an image.
         UIGraphicsBeginImageContext(self.view.frame.size)
         view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
         let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        //Show toolbar and navbar
-        topNav.isHidden = false
-        bottomBar.isHidden = false
+        
+        hideNavAndToolBar(hide: false)
+        
         return memedImage
     }
 }
