@@ -10,8 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var arrayOfMemes : [Meme] = [Meme]()
-    
     @IBOutlet weak var shareBtn: UIBarButtonItem!
     
     
@@ -88,6 +86,9 @@ class ViewController: UIViewController {
     @IBAction func clearAll(_ sender: Any) {
         imagePicked.image = nil
         resetUI()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "tabBarController")
+        self.present(controller, animated: true, completion: nil)
     }
     
     
@@ -146,8 +147,10 @@ class ViewController: UIViewController {
     
     func save(memedImage: UIImage) {
         let memeToSave = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imagePicked.image!, memedImage: memedImage)
+        let object = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+        appDelegate.memes.append(memeToSave)
         
-        arrayOfMemes.append(memeToSave)
     }
     
     func hideNavAndToolBar(hide : Bool) {
