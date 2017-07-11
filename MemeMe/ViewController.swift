@@ -12,16 +12,13 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var shareBtn: UIBarButtonItem!
     
-    
     @IBOutlet weak var cancelBtn: UIBarButtonItem!
-    
     
     @IBOutlet weak var cameraBtn: UIBarButtonItem!
     
     @IBOutlet weak var photoPickerBtn: UIBarButtonItem!
     
     @IBOutlet weak var imagePicked: UIImageView!
-    
     
     @IBOutlet weak var topTextField: UITextField!
     
@@ -65,7 +62,6 @@ class ViewController: UIViewController {
         shouldTextBeClearedDictionary[textField] = true
     }
     
-    
     override func viewDidLoad(){
         topTextField.delegate = self
         bottomTextField.delegate = self
@@ -73,24 +69,22 @@ class ViewController: UIViewController {
         resetUI()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        super.viewWillAppear(animated)
-        subscribeToKeyboardNotifications()
-    }
-    
-    
-
-    
-    
-    @IBAction func clearAll(_ sender: Any) {
-        imagePicked.image = nil
-        resetUI()
+    func presentSentMemes() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "tabBarController")
         self.present(controller, animated: true, completion: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeToKeyboardNotifications()
+    }
+    
+    @IBAction func clearAll(_ sender: Any) {
+        imagePicked.image = nil
+        resetUI()
+        presentSentMemes()
+    }
     
     @IBAction func shareMeme(_ sender: Any) {
         let image = self.generateMemedImage()
@@ -99,7 +93,7 @@ class ViewController: UIViewController {
             (activity, success, items, error) in
             if(success && error == nil){
                 self.save(memedImage: image)
-                self.dismiss(animated: true, completion: nil);
+                self.presentSentMemes()
             }
             else if (error != nil){
                 print("Error Occured While Saving The Meme")
@@ -143,7 +137,6 @@ class ViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
         
     }
-    
     
     func save(memedImage: UIImage) {
         let memeToSave = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imagePicked.image!, memedImage: memedImage)

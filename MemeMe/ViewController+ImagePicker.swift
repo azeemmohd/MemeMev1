@@ -9,7 +9,6 @@
 import UIKit
 
 extension ViewController : UIImagePickerControllerDelegate {
-    
     @IBAction func pickAnImageFromCamera(_ sender: Any) {
         chooseSourceTypeAndPresent(sourceType: .camera)
     }
@@ -37,8 +36,4 @@ extension ViewController : UIImagePickerControllerDelegate {
         shareBtn.isEnabled = true
         dismiss(animated: true, completion: nil)
     }
-    
-    
-    
-    
 }
