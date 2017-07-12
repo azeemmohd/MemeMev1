@@ -35,6 +35,7 @@ class SentMemesCollectionViewController: UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         memesToShow = getMemes()
+        collectionView?.reloadData()
     }
 
 

@@ -26,6 +26,7 @@ class SentMemesTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         memesToShow = getMemes()
+        tableView.reloadData()
     }
     
     // MARK: - Table view data source
